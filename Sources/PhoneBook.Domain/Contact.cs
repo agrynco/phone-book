@@ -2,6 +2,7 @@
 
 namespace PhoneBook.Domain
 {
+    [Serializable]
     public class Contact
     {
         public string FirstName { get; set; }

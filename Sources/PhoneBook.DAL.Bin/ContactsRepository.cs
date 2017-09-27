@@ -11,12 +11,12 @@ namespace PhoneBook.DAL.Bin
     public class ContactsRepository : IContactsRepository, IDisposable
     {
         private readonly ConcurrentDictionary<Guid, Contact> _contacts;
-        private readonly IContactsFileStreamCreateor _contactsFileStreamCreator;
+        private readonly IContactsStreamCreator _contactsStreamCreator;
 
 
-        public ContactsRepository(IContactsFileStreamCreateor contactsFileStreamCreator)
+        public ContactsRepository(IContactsStreamCreator contactsStreamCreator)
         {
-            _contactsFileStreamCreator = contactsFileStreamCreator;
+            _contactsStreamCreator = contactsStreamCreator;
 
             _contacts = new ConcurrentDictionary<Guid, Contact>();
 
@@ -34,22 +34,27 @@ namespace PhoneBook.DAL.Bin
             return _contacts.Values.ToArray();
         }
 
+        public int GetCount()
+        {
+            return _contacts.Count;
+        }
+
         public Contact[] Search(string searchPattern)
         {
             return _contacts.Values.Where(contact => contact.FirstName.ToLower().Contains(searchPattern) ||
                                                      contact.FirstName.ToLower().Contains(searchPattern)).ToArray();
         }
 
-        public void Remove(Contact contact)
+        public void Remove(Guid id)
         {
             Contact removedContact;
-            _contacts.TryRemove(contact.Id, out removedContact);
+            _contacts.TryRemove(id, out removedContact);
         }
 
         public void Dispose()
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            using (Stream stream = _contactsFileStreamCreator.Create())
+            using (Stream stream = _contactsStreamCreator.Create())
             {
                 formatter.Serialize(stream, GetAll());
             }
@@ -58,8 +63,13 @@ namespace PhoneBook.DAL.Bin
         private void Load()
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            using (Stream stream = _contactsFileStreamCreator.OpenForRead())
+            using (Stream stream = _contactsStreamCreator.OpenForRead())
             {
+                if (stream.Length == 0)
+                {
+                    return;
+                }
+
                 var contacts = (Contact[]) formatter.Deserialize(stream);
                 foreach (Contact contact in contacts)
                 {

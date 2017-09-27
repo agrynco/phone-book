@@ -40,9 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContactsFileStreamCreateor.cs" />
+    <Compile Include="ContactsStreamCreator.cs" />
     <Compile Include="ContactsRepository.cs" />
-    <Compile Include="IContactsFileStreamCreateor.cs" />
+    <Compile Include="IContactsStreamCreator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

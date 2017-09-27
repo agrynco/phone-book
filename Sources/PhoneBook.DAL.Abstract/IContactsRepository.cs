@@ -1,4 +1,5 @@
-﻿using PhoneBook.Domain;
+﻿using System;
+using PhoneBook.Domain;
 
 namespace PhoneBook.DAL.Abstract
 {
@@ -7,7 +8,9 @@ namespace PhoneBook.DAL.Abstract
         void Add(Contact contact);
         Contact[] GetAll();
 
-        void Remove(Contact contact);
+        int GetCount();
+
+        void Remove(Guid id);
 
         /// <summary>
         /// Will search by <see cref="Contact.FirstName"/> or <see cref="Contact.LastName"/>

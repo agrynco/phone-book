@@ -1,4 +1,5 @@
-﻿using PhoneBook.DAL.Abstract;
+﻿using System;
+using PhoneBook.DAL.Abstract;
 using PhoneBook.Domain;
 
 namespace PhoneBook.Business
@@ -22,9 +23,9 @@ namespace PhoneBook.Business
             return _contactsRepository.GetAll();
         }
 
-        public void Remove(Contact contact)
+        public void Remove(Guid id)
         {
-            _contactsRepository.Remove(contact);
+            _contactsRepository.Remove(id);
         }
 
         public Contact[] Search(string searchPattern)
