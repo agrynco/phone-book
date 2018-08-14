@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web.Http;
 using PhoneBook.DAL.Abstract;
 using PhoneBook.Domain;
 
@@ -23,11 +24,12 @@ namespace PhoneBook.Business
             return _contactsRepository.GetAll();
         }
 
-        public void Remove(Guid id)
+        public void Delete(Guid id)
         {
             _contactsRepository.Remove(id);
         }
 
+        [HttpGet]
         public Contact[] Search(string searchPattern)
         {
             return _contactsRepository.Search(searchPattern);
