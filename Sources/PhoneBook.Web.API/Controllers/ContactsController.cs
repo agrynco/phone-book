@@ -15,7 +15,6 @@ namespace PhoneBook.Web.API.Controllers
             _contactsBl = contactsBl;
         }
 
-        [Route]
         public Contact[] Get()
         {
             return _contactsBl.GetAll();
@@ -32,9 +31,10 @@ namespace PhoneBook.Web.API.Controllers
         }
 
         [HttpGet]
-        public Contact[] Search(string searchPatter)
+        [Route("{searchPattern}")]
+        public Contact[] Search(string searchPattern)
         {
-            return _contactsBl.Search(searchPatter);
+            return _contactsBl.Search(searchPattern);
         }
     }
 }
